@@ -14,7 +14,7 @@ int main()
 {
     int i, j, sqrt_n;
     double total;
-    clock_t t_start, t_end;
+    clock_t t_start, t_end; // Variables to count time
     omp_set_num_threads(8);
     scanf("%d", &n);
 
@@ -25,25 +25,28 @@ int main()
     primes[1] = 1;
 
     sqrt_n = (int) sqrt(n);
-#pragma omp for
+
+    // Parallel portion
+    #pragma omp for
     for(i = 2; i < sqrt_n; i++)
     {
         if(primes[i] == 0)
         {
             markMultiples(i);
-#pragma omp critical
+            #pragma omp critical
             primes[i] = isPrime(i);
         }
     }
     t_end = clock();
-/*
+
+    // Print all prime numbers
     for (i = 2; i < n; i++)
     {
         if(primes[i] == 1 || primes[i] == 0)
             printf("%d ", i);
     }
     printf("\n");
-*/
+
     total = (double) (t_end - t_start)/CLOCKS_PER_SEC;
     printf("Finished in %lf\n", total);
 }

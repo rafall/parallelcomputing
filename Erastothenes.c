@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int isPrime(int);
 void markMultiples(int);
@@ -10,8 +11,12 @@ int n;          // Max number
 int main()
 {
     int i, j;
+    clock_t t_start, t_end;
+    double total;
 
     scanf("%d", &n);
+
+    t_start = clock();
 
     primes = (int*) calloc (n, sizeof(int));
     primes[0] = 1;
@@ -26,13 +31,18 @@ int main()
         }
     }
 
+    t_end = clock();
+
+    total = (double)(t_end - t_start)/CLOCKS_PER_SEC;
+/*
     for (i = 2; i < n; i++)
     {
         if(primes[i] == 1 || primes[i] == 0)
             printf("%d ", i);
     }
     printf("\n");
-
+*/
+    printf("Finished in %lf\n", total);
 }
 
 // Verify if a number is prime
