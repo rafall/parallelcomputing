@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <omp.h>
+#include <time.h>
 
 int isPrime(int);
 void markMultiples(int);
@@ -9,31 +12,40 @@ int n;          // Max number
 
 int main()
 {
-    int i, j;
-
+    int i, j, sqrt_n;
+    double total;
+    clock_t t_start, t_end;
+    omp_set_num_threads(8);
     scanf("%d", &n);
+
+    t_start = clock();
 
     primes = (int*) calloc (n, sizeof(int));
     primes[0] = 1;
     primes[1] = 1;
 
-    #pragma omp parallel for
-    for(i = 2; i*i < n; i++)
+    sqrt_n = (int) sqrt(n);
+#pragma omp for
+    for(i = 2; i < sqrt_n; i++)
     {
         if(primes[i] == 0)
         {
             markMultiples(i);
+#pragma omp critical
             primes[i] = isPrime(i);
         }
     }
-
+    t_end = clock();
+/*
     for (i = 2; i < n; i++)
     {
         if(primes[i] == 1 || primes[i] == 0)
             printf("%d ", i);
     }
     printf("\n");
-
+*/
+    total = (double) (t_end - t_start)/CLOCKS_PER_SEC;
+    printf("Finished in %lf\n", total);
 }
 
 // Verify if a number is prime
