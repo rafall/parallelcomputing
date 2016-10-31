@@ -17,20 +17,16 @@ int main()
     primes[0] = 1;
     primes[1] = 1;
 
-    
     for(i = 2; i*i < n; i++)
     {
         if(primes[i] == 0)
         {
-            if(isPrime(i))
-            {
-                primes[i] = 1;
-                markMultiples(i);
-            }
+            markMultiples(i);
+            primes[i] = isPrime(i);
         }
     }
 
-    for (i = 2; i < n; ++i)
+    for (i = 2; i < n; i++)
     {
         if(primes[i] == 1 || primes[i] == 0)
             printf("%d ", i);
@@ -39,6 +35,7 @@ int main()
 
 }
 
+// Verify if a number is prime
 int isPrime(int k)
 {
     int i;
@@ -46,11 +43,12 @@ int isPrime(int k)
     for(i = 2; i < k; i++)
     {
         if(k%i == 0)
-            return 0;
+            return -1;
     }
     return 1;
 }
 
+// Mark all multiples of a non prime number as non prime
 void markMultiples(int k)
 {
     int i;
